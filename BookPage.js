@@ -1,145 +1,108 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Text, Button } from 'react-native';
+import * as React from 'react';
+import { View, StyleSheet, Button, Text } from 'react-native';
+import Constants from 'expo-constants';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { useNavigation } from '@react-navigation/native';
+import geolib from 'geolib';
 
-const Form = () => {
-  const navigation = useNavigation();
+const GOOGLE_PLACES_API_KEY = ''; // Your Google Places API key
+const BACKEND_API_URL = 'http://192.168.1.12:8907/api/TripInfo'; // Replace this with your backend API URL
 
-  const [pickupLocation, setPickupLocation] = useState('');
-  const [dropLocation, setDropLocation] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+const App = () => {
+  const [pickupLocation, setPickupLocation] = React.useState('');
+  const [dropLocation, setDropLocation] = React.useState('');
+  const [distance, setDistance] = React.useState(null);
 
-  const handleSubmit = () => {
-    // Check if all fields are entered
-    if (
-      pickupLocation.trim() === '' ||
-      dropLocation.trim() === '' ||
-      name.trim() === '' ||
-      email.trim() === '' ||
-      phoneNumber.trim() === '' ||
-      date.trim() === '' ||
-      time.trim() === ''
-    ) {
-      console.log('Please fill in all fields');
-      return;
-    }
+  const handleSubmit = async () => {
+    try {
+      // Fetch distance between pickup and drop locations using Google Maps Distance Matrix API
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(
+          pickupLocation
+        )}&destinations=${encodeURIComponent(dropLocation)}&key=${'AIzaSyCelDo4I5cPQ72TfCTQW-arhPZ7ALNcp8w'}`
+      );
 
-    // Prepare the data object with form information
-    const data = {
-      pickupLocation,
-      dropLocation,
-      name,
-      email,
-      phoneNumber,
-      date,
-      time,
-    };
+      if (!response.ok) {
+        throw new Error('Failed to fetch distance data');
+      }
 
-    // Send the data to the Spring Boot backend using a fetch request
-    fetch('http://192.168.1.12:8907/api/getuserinfo', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => {
-        if (response.ok) {
-          console.log('Form submitted successfully');
-          // Navigate to the "Cabs" page
-          navigation.navigate('Cabs');
-        } else {
-          console.log('Form submission failed');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
+      const data = await response.json();
+
+      // Extract distance value (in meters) from the API response
+      const distanceInMeters = data?.rows[0]?.elements[0]?.distance?.value;
+
+      // Convert distance from meters to kilometers
+      const distanceInKilometers = distanceInMeters / 1000;
+
+      // Set the distance in the state
+      setDistance(distanceInKilometers);
+
+      // Prepare the data object with form information and distance
+      const formData = {
+        pickupLocation,
+        dropLocation,
+        distance: distanceInKilometers,
+      };
+
+      // Send the data to the backend API using a POST request
+      const apiResponse = await fetch(BACKEND_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
+
+      if (!apiResponse.ok) {
+        throw new Error('Form submission failed');
+      }
+
+      console.log('Form submitted successfully');
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
     <View style={styles.container}>
-     <View style={styles.inputContainer}>
-        <TextInput
-        style={styles.textInput}
-          placeholder="Pickup Location"
-          value={pickupLocation}
-          onChangeText={text => setPickupLocation(text)}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-        style={styles.textInput}
-          placeholder="Drop Location"
-          value={dropLocation}
-          onChangeText={text => setDropLocation(text)}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Name"
-          value={name}
-          onChangeText={text => setName(text)}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Email"
-          value={email}
-          onChangeText={text => setEmail(text)}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChangeText={text => setPhoneNumber(text)}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Date"
-          value={date}
-          onChangeText={text => setDate(text)}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Time"
-          value={time}
-          onChangeText={text => setTime(text)}
-        />
-      </View>
+      <GooglePlacesAutocomplete
+        placeholder="Pickup Location"
+        query={{
+          key: 'AIzaSyCelDo4I5cPQ72TfCTQW-arhPZ7ALNcp8w',
+          language: 'en',
+        }}
+        onPress={(data, details = null) => setPickupLocation(data.description)}
+        onFail={(error) => console.error(error)}
+      />
+      <GooglePlacesAutocomplete
+        placeholder="Drop Location"
+        query={{
+          key: 'AIzaSyCelDo4I5cPQ72TfCTQW-arhPZ7ALNcp8w',
+          language: 'en',
+        }}
+        onPress={(data, details = null) => setDropLocation(data.description)}
+        onFail={(error) => console.error(error)}
+      />
       <Button title="Submit" onPress={handleSubmit} />
+      {distance && (
+        <Text style={styles.distanceText}>Distance: {distance} km</Text>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
+    padding: 50,
+    margin: 20,
+    paddingTop: Constants.statusBarHeight + 10,
+    backgroundColor: '#ecf0f1',
   },
-  autocompleteContainer: {
-    marginBottom: 40,
-  },
-  inputContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    marginBottom: 20,
-  },
-  textInput: {
-    height: 40,
+  distanceText: {
+    marginTop: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
-export default Form;
+export default App;
