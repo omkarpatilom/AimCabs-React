@@ -14,7 +14,7 @@ const Splash = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Image
-        source={require('./assets/aimcab.png')}
+        source={require('./assets/aimcab-splash.png')}
         style={{ width: 10000, height: 1000, resizeMode: 'contain' }}
       />
     </View>
