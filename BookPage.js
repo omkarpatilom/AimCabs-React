@@ -3,14 +3,52 @@ import { View, StyleSheet, Button, Text } from 'react-native';
 import Constants from 'expo-constants';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import geolib from 'geolib';
+import Header from './Components/Header';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from "@expo/vector-icons";
+
+
 
 const GOOGLE_PLACES_API_KEY = ''; // Your Google Places API key
 const BACKEND_API_URL = 'http://192.168.1.12:8907/api/TripInfo'; // Replace this with your backend API URL
 
+
+
+
+  
+
 const App = () => {
+
+    const navigation = useNavigation();
+
   const [pickupLocation, setPickupLocation] = React.useState('');
   const [dropLocation, setDropLocation] = React.useState('');
   const [distance, setDistance] = React.useState(null);
+   React.useEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      title: "AimCabBooking",
+      headerTitleStyle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "white",
+      },
+      headerStyle: {
+        backgroundColor: "#003580",
+        height: 110,
+        borderBottomColor: "transparent",
+        shadowColor: "transparent",
+      },
+      headerRight: () => (
+        <Ionicons
+          name="notifications-outline"
+          size={24}
+          color="white"
+          style={{ marginRight: 12 }}
+        />
+      ),
+    });
+  }, []);
 
   const handleSubmit = async () => {
     try {
@@ -63,7 +101,10 @@ const App = () => {
   };
 
   return (
+     <View>
+      
     <View style={styles.container}>
+      
       <GooglePlacesAutocomplete
         placeholder="Pickup Location"
         query={{
@@ -86,6 +127,7 @@ const App = () => {
       {distance && (
         <Text style={styles.distanceText}>Distance: {distance} km</Text>
       )}
+    </View>
     </View>
   );
 };
