@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-
 import Constants from "expo-constants";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import DatePicker from "react-native-date-ranges";
@@ -13,31 +11,46 @@ import {
   Pressable,
   Button,
   Text,
+  TextInput,
 } from "react-native";
-
 import { Feather } from "@expo/vector-icons";
-import { TextInput } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
+import { RadioButton } from "react-native-paper";
 
-const GOOGLE_PLACES_API_KEY = ""; // Your Google Places API key
-const BACKEND_API_URL = "http://192.168.1.12:8907/api/TripInfo"; // Replace this with your backend API URL
+const GOOGLE_PLACES_API_KEY = "AIzaSyCelDo4I5cPQ72TfCTQW-arhPZ7ALNcp8w";
+const BACKEND_API_URL = "YOUR_BACKEND_API_URL";
 
 const App = () => {
   const navigation = useNavigation();
 
-  const [pickupLocation, setPickupLocation] = React.useState("");
-  const [dropLocation, setDropLocation] = React.useState("");
-  const [distance, setDistance] = React.useState(null);
+  const [pickupLocation, setPickupLocation] = useState("");
+  const [dropLocation, setDropLocation] = useState("");
+  const [distance, setDistance] = useState(null);
 
   const [selectedDates, setSelectedDates] = useState();
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
 
+  const [checked, setChecked] = React.useState("first");
+
+  const [roundTrip, setRoundTrip] = useState(false);
+  const [singleTrip, setSingleTrip] = useState(false);
+
   const handleTimeChange = (time) => {
-  setSelectedTime(time);
-  setShowTimePicker(false);
-};
+    setSelectedTime(time);
+    setShowTimePicker(false);
+  };
+
+  const handleRoundTripPress = () => {
+    setRoundTrip(true);
+    setSingleTrip(false);
+  };
+
+  const handleSingleTripPress = () => {
+    setRoundTrip(false);
+    setSingleTrip(true);
+  };
 
   React.useEffect(() => {
     navigation.setOptions({
@@ -73,7 +86,7 @@ const App = () => {
           pickupLocation
         )}&destinations=${encodeURIComponent(
           dropLocation
-        )}&key=${"AIzaSyCelDo4I5cPQ72TfCTQW-arhPZ7ALNcp8w"}`
+        )}&key=${GOOGLE_PLACES_API_KEY}`
       );
 
       if (!response.ok) {
@@ -131,18 +144,9 @@ const App = () => {
     );
   };
 
-  {showTimePicker && (
-  <DateTimePickerModal
-    mode="time"
-    isVisible={showTimePicker}
-    onConfirm={handleTimeChange}
-    onCancel={() => setShowTimePicker(false)}
-  />
-)}
-
   return (
     <View>
-      <ScrollView>
+      <View>
         <View
           style={{
             margin: 20,
@@ -151,6 +155,35 @@ const App = () => {
             borderRadius: 6,
           }}
         >
+          {/* Checkbox container */}
+          <View style={styles.checkboxContainer}>
+            {/* Round Trip checkbox */}
+            <Pressable
+              style={[styles.checkbox, roundTrip && styles.checkboxSelected]}
+              onPress={() => handleRoundTripPress(!roundTrip)}
+            >
+              <Feather
+                name={roundTrip ? "check-circle" : "circle"}
+                size={24}
+                color="black"
+              />
+              <Text style={styles.checkboxLabel}>Round Trip</Text>
+            </Pressable>
+
+            {/* Single Trip checkbox */}
+            <Pressable
+              style={[styles.checkbox, singleTrip && styles.checkboxSelected]}
+              onPress={() => handleSingleTripPress(!singleTrip)}
+            >
+              <Feather
+                name={singleTrip ? "check-circle" : "circle"}
+                size={24}
+                color="black"
+              />
+              <Text style={styles.checkboxLabel}>Single Trip</Text>
+            </Pressable>
+          </View>
+
           {/* pick up */}
           <Pressable
             style={{
@@ -163,8 +196,17 @@ const App = () => {
               paddingVertical: 15,
             }}
           >
-            <Feather name="search" size={24} color="black" />
-            <TextInput placeholder="Enter your pickup point" />
+            <GooglePlacesAutocomplete
+              placeholder="pickup point"
+              query={{
+                key: GOOGLE_PLACES_API_KEY,
+                language: "en",
+              }}
+              onPress={(data, details = null) => {
+                setPickupLocation(data.description);
+              }}
+              onFail={(error) => console.error(error)}
+            />
           </Pressable>
 
           {/* Drop Point */}
@@ -179,9 +221,19 @@ const App = () => {
               paddingVertical: 15,
             }}
           >
-            <Feather name="search" size={24} color="black" />
-            <TextInput placeholder="Enter your drop point" />
+            <GooglePlacesAutocomplete
+              placeholder="drop point"
+              query={{
+                key: GOOGLE_PLACES_API_KEY,
+                language: "en",
+              }}
+              onPress={(data, details = null) => {
+                setDropLocation(data.description);
+              }}
+              onFail={(error) => console.error(error)}
+            />
           </Pressable>
+
           {/* Selected Dates */}
           <Pressable
             style={{
@@ -260,23 +312,22 @@ const App = () => {
             <DateTimePickerModal
               mode="time"
               value={selectedTime}
-              isVisible={showTimePicker} // Ensure the picker is visible based on showTimePicker state
-
+              isVisible={showTimePicker}
               onConfirm={handleTimeChange}
-               onCancel={() => setShowTimePicker(false)}
+              onCancel={() => setShowTimePicker(false)}
             />
           )}
 
           {/* Search Button */}
           <Pressable
-            onPress={() => searchPlaces(route?.params.input)}
+            onPress={handleSubmit}
             style={{
               paddingHorizontal: 10,
               borderColor: "#FFC72C",
               borderWidth: 2,
               paddingVertical: 15,
               backgroundColor: "#2a52be",
-              marginTop: 10, // Add margin to create vertical space
+              marginTop: 10,
             }}
           >
             <Text
@@ -291,7 +342,7 @@ const App = () => {
             </Text>
           </Pressable>
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -308,6 +359,25 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 18,
     fontWeight: "bold",
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 20,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  checkbox: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  checkboxSelected: {
+    color: "#003580",
+  },
+  checkboxLabel: {
+    marginLeft: 8,
+    fontSize: 16,
   },
 });
 

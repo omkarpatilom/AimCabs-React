@@ -44,7 +44,7 @@ const Homepage = () => {
       <View style={styles.content}>
         <View style={styles.logoContainer}>
           <Image
-            source={require('./assets/aim.jpg')}
+            source={require('./assets/logo.png')}
             style={styles.logoImage}
             resizeMode="contain"
           />
@@ -52,22 +52,22 @@ const Homepage = () => {
 
         <View style={styles.formContainer}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { width: '100%' }]}
             placeholder="Name"
-            placeholderTextColor="gray"
+            placeholderTextColor="white"
             value={name}
             onChangeText={text => setName(text)}
           />
 
           <TextInput
-            style={styles.input}
+            style={[styles.input, { width: '100%' }]}
             placeholder="Email"
-            placeholderTextColor="gray"
+            placeholderTextColor="white"
             value={email}
             onChangeText={text => setEmail(text)}
           />
 
-          <TouchableOpacity style={styles.loginButton} onPress={handleFormSubmit}>
+          <TouchableOpacity style={[styles.loginButton, { width: '100%' }]} onPress={handleFormSubmit}>
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
 
@@ -77,11 +77,11 @@ const Homepage = () => {
 
           {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
         </View>
-      </View>
 
-      <TouchableOpacity style={styles.skipButton} onPress={handleSkipTest}>
-        <Text style={styles.skipButtonText}>Skip</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkipTest}>
+          <Text style={styles.skipButtonText}>Skip</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -101,47 +101,44 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: '#003580',
     padding: 20,
-    borderRadius: 10,
+    width: '100%',
   },
   logoContainer: {
-    marginBottom: 20,
+    
   },
   logoImage: {
-    width: 200,
-    height: 50,
+    width: 300,
+    height: 300,
   },
   formContainer: {
     width: '100%',
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#6a83a6',
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     fontSize: 16,
+    color:'white',
+    backgroundColor:'#6a83a6'
   },
   loginButton: {
-    backgroundColor: '#4285F4',
+    backgroundColor: '#FFBF00',
     paddingVertical: 12,
-    borderRadius: 5,
+    borderRadius: 20,
     marginBottom: 10,
   },
   loginButtonText: {
-    color: 'white',
+    color: '#5A5A5A',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  createAccountButton: {
-    backgroundColor: '#DB4437',
-    paddingVertical: 12,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
+  
   createAccountButtonText: {
     color: 'white',
     fontSize: 16,
@@ -153,12 +150,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   skipButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
+    marginTop: 10,
+    bottom:'90%',
+    left:'45%',
   },
   skipButtonText: {
-    color: '#4285F4',
+    color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
