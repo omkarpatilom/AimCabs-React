@@ -8,7 +8,7 @@ const Header = () => {
     <View
       style={{
         backgroundColor: "#003580",
-        height: 65,
+        height: 60,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-around",

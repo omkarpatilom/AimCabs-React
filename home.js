@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Image, TextInput } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from @expo/vector-icons
 import Header from './Components/Header';
@@ -48,6 +48,13 @@ const HomePage = ({ navigation }) => {
       <Header />
       <View style={styles.searchBar}>
         {/* Your search bar component goes here */}
+        <TextInput
+      placeholder="Search"
+      style={styles.searchInput}
+      // Add any necessary event handlers or functionality
+    />  
+  
+  
       </View>
       <View style={styles.iconContainer}>
         <View style={styles.iconWrapper}>
@@ -233,17 +240,25 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   searchBar: {
-    height: 50,
-    backgroundColor: 'lightgray',
+    height: 40,
+    backgroundColor: 'white',
     paddingHorizontal: 10,
     justifyContent: 'center',
+    padding:2,
+    borderColor:'#9ea3a0',
+    borderWidth:2,
+    borderRadius:22,
+    margin:10,
+
+    
   },
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 5,
+    paddingTop: 12,
     backgroundColor: '#d7d7d9',
+    paddingBottom:12,
     
   },
   iconWrapper: {

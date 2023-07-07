@@ -109,7 +109,14 @@ const App = () => {
         pickupLocation,
         dropLocation,
         distance: distanceInKilometers,
+        roundTrip,
+        singleTrip,
+        selectedDates,
+        selectedTime,
       };
+
+      // Send the data to the SelectCabPage component using navigation
+navigation.navigate('SelectCab', formData);
 
       // Send the data to the backend API using a POST request
       const apiResponse = await fetch(BACKEND_API_URL, {

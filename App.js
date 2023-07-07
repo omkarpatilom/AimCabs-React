@@ -9,6 +9,8 @@ import Home from './home';
 import BookPage from './BookPage';
 import AppNavigator from './AppNavigator';
 import Cabs from './Cabs';
+import CabSelect from './Select-cab';
+
 
 const Stack = createStackNavigator();
 
@@ -16,7 +18,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <StatusBar style="auto" />
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown:false}}>
         <Stack.Screen
           name="Splash"
           component={Splash}
@@ -26,6 +28,9 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="BookPage" component={BookPage} />
                 <Stack.Screen name="Cabs" component={Cabs} />
+                                <Stack.Screen name="SelectCab" component={CabSelect} />
+
+
 
       </Stack.Navigator>
     </NavigationContainer>
