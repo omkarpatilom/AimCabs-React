@@ -67,14 +67,14 @@ const Regular = ({ formData }) => {
   if (fare) {
     // Check if the fare state is available
     const fareObject = fare[0]; // Assuming the fare data is an array with a single object
-    farePrice = fareObject.sedan; // Store the fare price in the variable
+    farePrice = fareObject.hatchback; // Store the fare price in the variable
   }
 
   return (
     <View style={styles.container}>
       <ScrollView>
         {data
-          .filter((item) => item.model_type === "SEDAN")
+          .filter((item) => item.model_type === "HATCHBACK")
           .map((item) => {
             // Find the corresponding fare for the current item
 

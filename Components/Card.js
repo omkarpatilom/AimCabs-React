@@ -1,40 +1,58 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // Import FontAwesome icons
 
-const Card = ({ data }) => {
+const Card = ({ data, distance, fare }) => {
   const handleBooking = () => {
     // Handle booking logic here
     console.log("Booking button clicked");
+    console.log("distance" + distance);
   };
+
+  const imageUrl =
+    "https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,w_956,h_537/v1568134115/assets/6d/354919-18b0-45d0-a151-501ab4c4b114/original/XL.png"; // Replace with your image URL
+
+  // dataService.js
 
   return (
     <View style={styles.card}>
       <View style={styles.cardContent}>
-        <Text style={styles.place}>{data.model_name}</Text>
-        <Text style={styles.shortDescription}>
-          Model Type: <Text style={styles.value}>{data.model_type}</Text>
-        </Text>
-        <Text style={styles.shortDescription}>
-          Seats: <Text style={styles.value}>{data.seats}</Text>
-        </Text>
-        <Text style={styles.shortDescription}>
-          Fuel: <Text style={styles.value}>{data.fuel_type}</Text>
-        </Text>
-        <Text style={styles.label}>
-          Price: <Text style={styles.value}>{data.price}</Text>
-        </Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleBooking}>
-            <Text style={styles.buttonText}>Book Now</Text>
-          </TouchableOpacity>
+        <View style={styles.textContainer}>
+          <Text style={styles.place}>{data.model_name}</Text>
+          <Text style={styles.shortDescription}>
+            Model:
+            <Text style={styles.value}> {data.model_type}</Text>
+          </Text>
+          <Text style={styles.shortDescription}>
+            Seats:
+            <Text style={styles.value}> {data.seats}</Text>
+          </Text>
+          <Text style={styles.shortDescription}>
+            Fuel:
+            <Text style={styles.value}> {data.fuel_type}</Text>
+          </Text>
+
+          {/* <Text style={styles.shortDescription}>
+            distance:                                             //Distance 
+            <Text style={styles.value}> {distance}</Text>
+          </Text> */}
+          <Text style={styles.shortDescription}>
+            price:
+            {/* <Text style={styles.value}>{fare * parseInt(distance)}</Text> */}
+          </Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleBooking}>
+              <Text style={styles.buttonText}>Book Now</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+        <Image source={{ uri: imageUrl }} style={styles.cardImage} />
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   card: {
     backgroundColor: "#fff",
     borderRadius: 25,
@@ -50,7 +68,22 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   cardContent: {
+    flexDirection: "row",
     padding: 15,
+  },
+  cardImage: {
+    width: 140,
+    height: 70,
+    borderTopRightRadius: 25,
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    top: 40,
+    right: 10,
+  },
+  textContainer: {
+    flex: 1,
+    marginLeft: 10,
   },
   place: {
     fontSize: 24,
@@ -66,18 +99,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
     color: "#555",
-    top: 45,
+    top: 40,
+    right: 140,
   },
   value: {
     fontSize: 16,
     marginBottom: 10,
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: 10,
     alignItems: "center",
-    paddingLeft:160,
-    bottom: 10,
-    
+    left: 180,
   },
   button: {
     backgroundColor: "#007bff",
@@ -90,6 +122,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-});
+};
 
 export default Card;

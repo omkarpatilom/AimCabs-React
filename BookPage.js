@@ -16,8 +16,6 @@ import {
 import { Feather } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-import { RadioButton } from "react-native-paper";
-
 const GOOGLE_PLACES_API_KEY = "AIzaSyCelDo4I5cPQ72TfCTQW-arhPZ7ALNcp8w";
 const BACKEND_API_URL = "YOUR_BACKEND_API_URL";
 
@@ -116,7 +114,7 @@ const App = () => {
       };
 
       // Send the data to the SelectCabPage component using navigation
-navigation.navigate('SelectCab', formData);
+      navigation.navigate("SelectCab", { formData: formData });
 
       // Send the data to the backend API using a POST request
       const apiResponse = await fetch(BACKEND_API_URL, {
