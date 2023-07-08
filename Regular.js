@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Card from "./Components/Card";
 import { Ionicons } from "@expo/vector-icons";
@@ -70,23 +70,38 @@ const Regular = ({ formData }) => {
     farePrice = fareObject.hatchback; // Store the fare price in the variable
   }
 
+  const handleBooking = (item) => {
+    // Handle booking logic here
+    console.log("Booking button clicked");
+    console.log("distance" + formData.distance);
+
+    // Send the data to the Invoice component using navigation
+    navigation.navigate("Invoice", {
+      data: item,
+      distance: formData.distance,
+      fare: farePrice,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
         {data
           .filter((item) => item.model_type === "HATCHBACK")
-          .map((item) => {
-            // Find the corresponding fare for the current item
-
-            return (
-              <Card
-                key={item.id}
+          .map((item) => (
+            <Card
+            key={item.id}
                 data={item}
                 distance={formData.distance}
+                time={formData.selectedTime}
+                pickup={formData.pickupLocation}
+                drop={formData.dropLocation}
+                 date={formData.selectedDates}
+
+
                 fare={farePrice}
-              />
-            );
-          })}
+            />
+          ))}
       </ScrollView>
     </View>
   );

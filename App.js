@@ -10,6 +10,8 @@ import BookPage from './BookPage';
 import AppNavigator from './AppNavigator';
 import Cabs from './Cabs';
 import CabSelect from './Select-cab';
+import invoice from './invoice'
+import Payment from './Payment'
 
 
 const Stack = createStackNavigator();
@@ -27,8 +29,10 @@ export default function App() {
         <Stack.Screen name="Homepage" component={Homepage} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="BookPage" component={BookPage} />
-                <Stack.Screen name="Cabs" component={Cabs} />
-                                <Stack.Screen name="SelectCab" component={CabSelect} />
+        <Stack.Screen name="Cabs" component={Cabs} />
+        <Stack.Screen name="SelectCab" component={CabSelect} />
+        <Stack.Screen name="invoice" component={invoice} />
+        <Stack.Screen name="Payment" component={Payment} />
 
 
 

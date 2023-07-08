@@ -1,12 +1,18 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // Import FontAwesome icons
+import { useNavigation } from "@react-navigation/native";
+
 
 const Card = ({ data, distance, fare }) => {
+    const navigation = useNavigation();
+
   const handleBooking = () => {
     // Handle booking logic here
     console.log("Booking button clicked");
     console.log("distance" + distance);
+  navigation.navigate("invoice", { modelName: data.model_name, distance, fare });
+
   };
 
   const imageUrl =
@@ -38,7 +44,7 @@ const Card = ({ data, distance, fare }) => {
           </Text> */}
           <Text style={styles.shortDescription}>
             price:
-            {/* <Text style={styles.value}>{fare * parseInt(distance)}</Text> */}
+             <Text style={styles.value}>{fare * parseInt(distance)}</Text> 
           </Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={handleBooking}>
@@ -78,8 +84,6 @@ const styles = {
     resizeMode: "cover",
     justifyContent: "flex-end",
     alignItems: "center",
-    top: 40,
-    right: 10,
   },
   textContainer: {
     flex: 1,
@@ -94,22 +98,15 @@ const styles = {
     fontSize: 16,
     marginBottom: 5,
   },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-    color: "#555",
-    top: 40,
-    right: 140,
-  },
   value: {
     fontSize: 16,
     marginBottom: 10,
   },
   buttonContainer: {
+    flex: 1,
     marginTop: 10,
     alignItems: "center",
-    left: 180,
+    justifyContent: "flex-end",
   },
   button: {
     backgroundColor: "#007bff",
@@ -123,5 +120,6 @@ const styles = {
     fontWeight: "bold",
   },
 };
+
 
 export default Card;

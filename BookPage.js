@@ -43,6 +43,8 @@ const App = () => {
   const handleRoundTripPress = () => {
     setRoundTrip(true);
     setSingleTrip(false);
+    setSelectedDates(null); // Reset selected dates when switching to round trip
+    
   };
 
   const handleSingleTripPress = () => {
@@ -148,6 +150,9 @@ const App = () => {
       />
     );
   };
+
+
+  
 
   return (
     <View>
@@ -284,8 +289,9 @@ const App = () => {
               }
               allowFontScaling={false}
               placeholder={"Select Your Dates"}
-              mode={"single"}
+              mode={roundTrip ? "range" : "single"} // Update the mode based on roundTrip state
             />
+
           </Pressable>
 
           {/* Time */}
