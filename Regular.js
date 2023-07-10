@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Animated } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Card from "./Components/Card";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,7 +13,7 @@ const Regular = ({ formData }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerShown: true,
+      headerShown: false,
       title: "AimCabBooking",
       headerTitleStyle: {
         fontSize: 20,
@@ -70,38 +70,44 @@ const Regular = ({ formData }) => {
     farePrice = fareObject.hatchback; // Store the fare price in the variable
   }
 
-  const handleBooking = (item) => {
-    // Handle booking logic here
-    console.log("Booking button clicked");
-    console.log("distance" + formData.distance);
-
-    // Send the data to the Invoice component using navigation
-    navigation.navigate("Invoice", {
-      data: item,
-      distance: formData.distance,
-      fare: farePrice,
-    });
-  };
+  const scrollY = new Animated.Value(0);
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [110, 60],
+    extrapolate: 'clamp',
+  });
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {data
-          .filter((item) => item.model_type === "HATCHBACK")
-          .map((item) => (
-            <Card
-            key={item.id}
+      <Animated.View style={[styles.header, { height: headerHeight }]}>
+        <Text style={styles.headerTitle}>AimCabBooking</Text>
+        <Ionicons name="notifications-outline" size={24} color="white" style={styles.notificationIcon} />
+      </Animated.View>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
+      >
+        <View style={styles.cardsContainer}>
+          {data
+            .filter((item) => item.model_type === "HATCHBACK")
+            .map((item) => (
+              <Card
+                key={item.id}
                 data={item}
                 distance={formData.distance}
                 time={formData.selectedTime}
                 pickup={formData.pickupLocation}
                 drop={formData.dropLocation}
-                 date={formData.selectedDates}
-
-
+                date={formData.selectedDates}
                 fare={farePrice}
-            />
-          ))}
+              />
+            ))}
+        </View>
       </ScrollView>
     </View>
   );
@@ -110,6 +116,42 @@ const Regular = ({ formData }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  header: {
+    backgroundColor: "#003580",
+    height: 110,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    elevation: 1,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
+  },
+  notificationIcon: {
+    position: "absolute",
+    top: "50%",
+    right: 12,
+    transform: [{ translateY: -12 }],
+  },
+  scrollView: {
+    flex: 1,
+    paddingTop: 110,
+    paddingBottom: 60,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  cardsContainer: {
+    padding: 10,
+    marginBottom: 100, // Adjust the marginBottom to leave space for the bottom navigation
   },
 });
 

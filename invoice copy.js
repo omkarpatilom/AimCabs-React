@@ -6,9 +6,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 const Invoice = ({ route }) => {
   const navigation = useNavigation();
-
-
-  const { modelName, distance, fare, pickup, drop, price, date, time, st, fl } = route.params;
+  const { modelName, distance, fare } = route.params;
 
   useEffect(() => {
     navigation.setOptions({
@@ -62,32 +60,32 @@ const Invoice = ({ route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-     
+      <Text style={styles.title}>Invoice</Text>
 
       <View style={styles.cardContainer}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Pickup Point</Text>
-          <Text>{pickup}</Text>
+          <Text>Pune</Text>
         </View>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Drop Point</Text>
-          <Text>{drop}</Text>
+          <Text>Mumbai</Text>
         </View>
       </View>
 
       <View style={styles.cabCard}>
         <Text style={styles.cardTitle}>Cab Details:</Text>
         <View style={styles.row}>
-          <Text style={styles.label}>Name: </Text>
-          <Text>{modelName}</Text>
+          <Text style={styles.label}>Name:</Text>
+          <Text>Sedan</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Seats:</Text>
-          <Text>{st}+1</Text>
+          <Text>4</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Fuel:</Text>
-          <Text>{fl}</Text>
+          <Text>CNG</Text>
         </View>
         
         {/* <View style={styles.row}>
@@ -96,7 +94,7 @@ const Invoice = ({ route }) => {
         </View> */}
         <View style={styles.row}>
           <Text style={styles.label}>Price:</Text>
-          <Text>{"₹ " +price}</Text>
+          <Text>1952</Text>
         </View>
       </View>
 
@@ -155,19 +153,19 @@ const Invoice = ({ route }) => {
         <Text style={styles.paymentTitle}>Payment Details</Text>
         <View style={styles.row}>
           <Text style={styles.label}>Base Fare:</Text>
-          <Text>{fare} /km</Text>
+          <Text>{fare}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Distance:</Text>
-          <Text>{parseInt(distance)} km</Text>
+          <Text>{distance}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Service charges:</Text>
-          <Text>{"₹ " +parseInt((fare*distance)%10)}</Text>
+          <Text>{parseInt((fare*distance)%10)}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Total:</Text>
-          <Text>{"₹ " + parseInt(price+((fare*distance)%10))}</Text>
+          <Text>{parseInt(fare + distance)}</Text>
         </View>
         <View style={styles.submitButtonContainer}>
             <Button title="Book now" onPress={handleFormSubmit} color="#003580" />

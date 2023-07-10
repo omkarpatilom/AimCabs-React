@@ -4,14 +4,18 @@ import { FontAwesome } from "@expo/vector-icons"; // Import FontAwesome icons
 import { useNavigation } from "@react-navigation/native";
 
 
-const Card = ({ data, distance, fare }) => {
+const Card = ({ data, distance, fare , time,pickup,drop, date}) => {
     const navigation = useNavigation();
 
   const handleBooking = () => {
     // Handle booking logic here
     console.log("Booking button clicked");
     console.log("distance" + distance);
-  navigation.navigate("invoice", { modelName: data.model_name, distance, fare });
+    console.log("seats"+ data.seats)
+    const st = data.seats;
+    const fl  = data.fuel_type
+ // navigation.navigate("invoice", {seat: data.seats, fuel: data.fuel_type ,modelName: data.model_name, distance, fare, time,pickup,drop ,date,price: fare * parseInt(distance)});
+navigation.navigate("invoice", { st, fl, modelName: data.model_name, distance, fare, time, pickup, drop, date, price: fare * parseInt(distance) });
 
   };
 
@@ -62,7 +66,7 @@ const styles = {
   card: {
     backgroundColor: "#fff",
     borderRadius: 25,
-    marginHorizontal: 20,
+    marginHorizontal: 12,
     marginVertical: 10,
     shadowColor: "#000",
     shadowOffset: {
