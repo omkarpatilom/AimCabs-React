@@ -14,7 +14,7 @@ const Regular = ({ formData }) => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
-      title: "AimCabBooking",
+      title: "",
       headerTitleStyle: {
         fontSize: 20,
         fontWeight: "bold",
@@ -80,7 +80,7 @@ const Regular = ({ formData }) => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.header, { height: headerHeight }]}>
-        <Text style={styles.headerTitle}>AimCabBooking</Text>
+        <Text style={styles.headerTitle}></Text>
         <Ionicons name="notifications-outline" size={24} color="white" style={styles.notificationIcon} />
       </Animated.View>
       <ScrollView

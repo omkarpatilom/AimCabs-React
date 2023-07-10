@@ -14,7 +14,7 @@ const Regular = ({ formData }) => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
-      title: "AimCabBooking",
+      title: "",
       headerTitleStyle: {
         fontSize: 20,
         fontWeight: "bold",

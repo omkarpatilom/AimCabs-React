@@ -14,7 +14,7 @@ const Header = () => {
         justifyContent: "space-around",
       }}
     >
-      <Pressable
+      {/* <Pressable
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -33,7 +33,7 @@ const Header = () => {
             fontSize: 15,
           }}
         >
-          Cab
+          
         </Text>
       </Pressable>
 
@@ -57,9 +57,9 @@ const Header = () => {
         >
           Car Rental
         </Text>
-      </Pressable>
+      </Pressable> */}
 
-      <Pressable
+      {/* <Pressable
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -78,7 +78,7 @@ const Header = () => {
         >
           Taxi
         </Text>
-      </Pressable>
+      </Pressable> */}
     </View>
   );
 };

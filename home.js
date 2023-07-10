@@ -20,7 +20,7 @@ const HomePage = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      title: 'AimCabBooking',
+      title: '',
       headerTitleStyle: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -61,7 +61,7 @@ const HomePage = ({ navigation }) => {
           <TouchableOpacity onPress={handleTaxiPress} >
           <View style={styles.icon}>
                <Image source={{uri:'https://cdn-icons-png.flaticon.com/512/619/619127.png'}} style={styles.iconImage   } onPress={handleTaxiPress} />
-              <Text style={styles.iconText}>Cab</Text>
+              <Text style={styles.iconText}>Cabs</Text>
           </View>
           </TouchableOpacity>
         
@@ -69,17 +69,17 @@ const HomePage = ({ navigation }) => {
         <View style={styles.iconWrapper}>
           <TouchableOpacity>
           <View style={styles.icon}>
-               <Image source={{uri:'https://www.pngplay.com/wp-content/uploads/6/Airplane-Logo-PNG-Clipart-Background.png'}} style={styles.iconImage} />
-            <Text style={styles.iconText}>Flights</Text>
+               <Image source={{uri:'https://cdn-icons-png.flaticon.com/512/5030/5030991.png'}} style={styles.iconImage} />
+            <Text style={styles.iconText}>Buses</Text>
           </View>
           </TouchableOpacity>
           
         </View>
         <View style={styles.iconWrapper}>
           <View style={styles.icon}>
-                        <Image source={{uri:'https://cdn2.iconfinder.com/data/icons/cab-filled-outline/128/Cab_-_Filled_Outline_-_35-33-512.png'}} style={styles.iconImage} />
+                        <Image source={{uri:''}} style={styles.iconImage} />
 
-              <Text style={styles.iconText}>Rental</Text>
+              <Text style={styles.iconText}>Flights</Text>
           </View>
         
         </View>

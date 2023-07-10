@@ -15,7 +15,7 @@ const Payment = () => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      title: 'AimCabBooking',
+      title: '',
       headerTitleStyle: {
         fontSize: 20,
         fontWeight: 'bold',

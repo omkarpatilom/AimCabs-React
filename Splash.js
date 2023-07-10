@@ -7,7 +7,7 @@ const Splash = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Homepage'); // Replace 'Home' with the desired screen name
+      navigation.navigate('Loginpage'); // Replace 'Home' with the desired screen name
     }, 3000); // 3000 milliseconds (3 seconds) delay
   }, []);
 

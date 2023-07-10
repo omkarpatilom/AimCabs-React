@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const Homepage = () => {
+const Loginpage = () => {
   const navigation = useNavigation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -82,11 +82,12 @@ const Homepage = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.createAccountButton}
-            onPress={() => {}}
-          >
-            <Text style={styles.createAccountButtonText}>Create Account</Text>
-          </TouchableOpacity>
+  style={styles.createAccountButton}
+  onPress={() => navigation.navigate("RegisterUser")}
+>
+  <Text style={styles.createAccountButtonText}>Create Account</Text>
+</TouchableOpacity>
+
 
           {errorMessage ? (
             <Text style={styles.error}>{errorMessage}</Text>
@@ -174,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Homepage;
+export default Loginpage;
