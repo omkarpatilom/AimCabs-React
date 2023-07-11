@@ -5,13 +5,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Payment = () => {
+const Payment = ({ route }) => {
   const navigation = useNavigation();
+  const { InvoiceData } = route.params;
   const [paymentMode, setPaymentMode] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [congratulationAnimation] = useState(new Animated.Value(0));
   const [processingAnimation] = useState(new Animated.Value(0));
 
+  console.log("Payment: "+JSON.stringify(InvoiceData));
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -20,7 +22,7 @@ const Payment = () => {
         fontSize: 20,
         fontWeight: 'bold',
         color: 'white',
-        fontFamily: 'Helvetica Neue',
+        fontFamily: ' ',
       },
       headerStyle: {
         backgroundColor: '#003580',
@@ -44,7 +46,7 @@ const Payment = () => {
         </View>
       ),
     });
-  }, []);
+  }, []); 
 
   useEffect(() => {
     if (showConfirmation) {
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 20,
-    fontFamily: 'Helvetica Neue',
+    fontFamily: ' ',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginTop: 10,
-    fontFamily: 'Helvetica Neue',
+    fontFamily: '',
   },
   confirmationMessage: {
     alignItems: 'center',
@@ -191,12 +193,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
-    fontFamily: 'Helvetica Neue',
+    fontFamily: ' ',
   },
   confirmationText: {
     fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'Helvetica Neue',
+    fontFamily: ' ',
   },
   processingAnimation: {
     marginTop: 20,
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: 'Helvetica Neue',
+    fontFamily: ' ',
   },
 });
 

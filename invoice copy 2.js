@@ -3,16 +3,10 @@ import { View, Text, StyleSheet, TextInput, Button, ScrollView } from "react-nat
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Invoice = ({ route }) => {
   const navigation = useNavigation();
-  const [userData, setUserData] = useState("");
 
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
 
   const { modelName, distance, fare, pickup, drop, price, date, time, st, fl } = route.params;
 
@@ -55,68 +49,21 @@ const Invoice = ({ route }) => {
     });
   }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const fetchData = async () => {
-    try {
-      const fetchedData = await AsyncStorage.getItem("userData");
-      if (fetchedData !== null) {
-        const user = JSON.parse(fetchedData);
-        console.log("UserData in Invoice: " + JSON.stringify(user));
-        setUserData(user);
-        setName(user.name);
-        setAge(user.age + "");
-        setGender(user.gender);
-        setPhoneNumber(user.phone);
-
-
-      }
-    } catch (error) {
-      console.error("Error retrieving user data:", error);
-    }
-  };
-
-
-  const getButtonColor = (buttonGender) => {
-    if (gender === buttonGender) {
-      return "#003580"; // Active button color
-    }
-    return "#ccc"; // Inactive button color
-  };
-
-
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleFormSubmit = () => {
-    // Create an object with the form data and other parameters
-    const InvoiceData = {
-      name,
-      age,
-      gender,
-      phoneNumber,
-      modelName,
-      distance,
-      fare,
-      pickup,
-      drop,
-      price,
-      date,
-      time,
-      st,
-      fl,
-      triptype
-    };
-  
     // Handle form submission logic here
-    // Send the data to the Payment component using navigation
-    navigation.navigate("Payment", { InvoiceData });
+     // Send the data to the Invoice component using navigation
+     navigation.navigate("Payment");
   };
-  
-
-
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+     
+
       <View style={styles.cardContainer}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Pickup Point</Text>
@@ -142,9 +89,14 @@ const Invoice = ({ route }) => {
           <Text style={styles.label}>Fuel:</Text>
           <Text>{fl}</Text>
         </View>
+        
+        {/* <View style={styles.row}>
+          <Text style={styles.label}>Distance:</Text>
+          <Text>320</Text>
+        </View> */}
         <View style={styles.row}>
           <Text style={styles.label}>Price:</Text>
-          <Text>{"₹ " + price}</Text>
+          <Text>{"₹ " +price}</Text>
         </View>
       </View>
 
@@ -176,16 +128,16 @@ const Invoice = ({ route }) => {
               <Button
                 title=" Male "
                 onPress={() => setGender("Male")}
-                color={getButtonColor("Male")}
+                color={gender === "Male" ? "#003580" : "#ccc"}
               />
               <Button
                 title="Female"
                 onPress={() => setGender("Female")}
-                color={getButtonColor("Female")}
+                color={gender === "Female" ? "#003580" : "#ccc"}
               />
             </View>
           </View>
-          <View style={styles.formField}>
+         <View style={styles.formField}>
             <FontAwesome name="phone" size={18} color="#ccc" style={{ marginRight: 5 }} />
             <TextInput
               style={styles.input}
@@ -195,6 +147,7 @@ const Invoice = ({ route }) => {
               onChangeText={setPhoneNumber}
             />
           </View>
+          
         </View>
       </View>
 
@@ -210,16 +163,17 @@ const Invoice = ({ route }) => {
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Service charges:</Text>
-          <Text>{"₹ " + parseInt((fare * distance) % 10)}</Text>
+          <Text>{"₹ " +parseInt((fare*distance)%10)}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Total:</Text>
-          <Text>{"₹ " + parseInt(price + ((fare * distance) % 10))}</Text>
+          <Text>{"₹ " + parseInt(price+((fare*distance)%10))}</Text>
         </View>
         <View style={styles.submitButtonContainer}>
-          <Button title="Book now" onPress={handleFormSubmit} color="#003580" />
-        </View>
+            <Button title="Book now" onPress={handleFormSubmit} color="#003580" />
+          </View>
       </View>
+
     </ScrollView>
   );
 };
@@ -318,6 +272,7 @@ const styles = StyleSheet.create({
   },
   genderButtonsContainer: {
     flexDirection: "row",
+   
     flex: 1,
     marginLeft: 6,
   },

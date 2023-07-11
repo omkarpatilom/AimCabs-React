@@ -30,7 +30,7 @@ const App = () => {
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  const [tripType, setTripType] = useState("single"); // State to track the selected trip type
+  const [tripType, setTripType] = useState("one way"); // State to track the selected trip type
 
   const [showRentalField, setShowRentalField] = useState(false); // New state variable
 
@@ -179,11 +179,11 @@ const App = () => {
             <Pressable
               style={[
                 styles.checkbox,
-                tripType === "single" && { backgroundColor: "#FFC72C" },
+                tripType === "one way" && { backgroundColor: "#FFC72C" },
               ]}
-              onPress={() => handleTripTypePress("single")}
+              onPress={() => handleTripTypePress("one way")}
             >
-              <Text>Single Trip</Text>
+              <Text>One Way</Text>
             </Pressable>
 
             {/* Round Trip button */}

@@ -105,6 +105,7 @@ const Regular = ({ formData }) => {
                 drop={formData.dropLocation}
                 date={formData.selectedDates}
                 fare={farePrice}
+                triptype={formData.triptype}
               />
             ))}
         </View>

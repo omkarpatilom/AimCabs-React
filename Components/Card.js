@@ -4,7 +4,7 @@ import { FontAwesome } from "@expo/vector-icons"; // Import FontAwesome icons
 import { useNavigation } from "@react-navigation/native";
 
 
-const Card = ({ data, distance, fare , time,pickup,drop, date}) => {
+const Card = ({ data, distance, fare ,triptype, time,pickup,drop, date}) => {
     const navigation = useNavigation();
 
   const handleBooking = () => {
@@ -15,7 +15,7 @@ const Card = ({ data, distance, fare , time,pickup,drop, date}) => {
     const st = data.seats;
     const fl  = data.fuel_type
  // navigation.navigate("invoice", {seat: data.seats, fuel: data.fuel_type ,modelName: data.model_name, distance, fare, time,pickup,drop ,date,price: fare * parseInt(distance)});
-navigation.navigate("invoice", { st, fl, modelName: data.model_name, distance, fare, time, pickup, drop, date, price: fare * parseInt(distance) });
+navigation.navigate("invoice", { st, fl, modelName: data.model_name, distance, fare, time,triptype, pickup, drop, date, price: fare * parseInt(distance) });
 
   };
 
