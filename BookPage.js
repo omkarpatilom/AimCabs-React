@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef  } from "react";
 import Constants from "expo-constants";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "@react-navigation/native";
@@ -11,6 +11,7 @@ import {
   Pressable,  
   Text,
   TextInput,
+  Animated, Easing
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -31,6 +32,11 @@ const App = () => {
 
   const [tripType, setTripType] = useState("single"); // State to track the selected trip type
 
+  const [showRentalField, setShowRentalField] = useState(false); // New state variable
+
+  const rentalFieldHeight = useRef(new Animated.Value(0)).current; // Animation property
+
+
   
 
   const handleTimeChange = (time) => {
@@ -38,15 +44,35 @@ const App = () => {
     setShowTimePicker(false);
   };
 
-  const handleTripTypePress = (type) => {
+  const handleTripTypePress = (event) => {
+    const type = event; // or event.target.value, depending on the event object structure
     setTripType(type);
-    setSelectedDates(null); // Reset selected dates when switching trip type
+    setSelectedDates(null);
+  
+    // Toggle the rental field visibility
+    if (type === "rental") {
+      setShowRentalField(true);
+      Animated.timing(rentalFieldHeight, {
+        toValue: 200, // Adjust the height as needed
+        duration: 500,
+        easing: Easing.ease,
+        useNativeDriver: false,
+      }).start();
+    } else {
+      setShowRentalField(false);
+      Animated.timing(rentalFieldHeight, {
+        toValue: 0,
+        duration: 500,
+        easing: Easing.ease,
+        useNativeDriver: false,
+      }).start();
+    }
   };
-
+  
   React.useEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      title: "AimCabBooking",
+      title: "",
       headerTitleStyle: {
         fontSize: 20,
         fontWeight: "bold",
@@ -127,6 +153,7 @@ const App = () => {
     }
   };
 
+  
   const customButton = (onConfirm) => {
     return (
       <Pressable onPress={onConfirm} style={styles.customButton}>
@@ -267,14 +294,26 @@ const App = () => {
             />
           )}
 
-          {/* Search Button */}
-          <Pressable
+           {/* Rental field */}
+           {showRentalField && (
+            <Animated.View style={{ height: rentalFieldHeight }}>
+              <TextInput
+                placeholder="Enter hours"
+                style={[styles.inputContainer, styles.button]}
+              />
+            </Animated.View>
+          )}
+
+
+          
+        </View>
+        {/* Search Button */}
+        <Pressable
             onPress={handleSubmit}
             style={[styles.button, styles.searchButton]}
           >
             <Text style={styles.searchButtonText}>Search</Text>
           </Pressable>
-        </View>
       </View>
     </View>
   );
@@ -307,7 +346,7 @@ const styles = StyleSheet.create({
     borderColor: "#FFC72C",
     borderWidth: 2,
     paddingVertical: 15,
-    marginBottom: 10,
+    marginBottom: 2,
   },
   datePicker: {
     width: 350,

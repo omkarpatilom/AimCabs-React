@@ -6,35 +6,67 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  Alert
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const Loginpage = () => {
   const navigation = useNavigation();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleFormSubmit = async () => {
-    try {
-      const response = await fetch("http://192.168.1.12:8907/api/check", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email }),
-      });
+  
 
-      if (response.ok) {
-        // Name and email exist in the database
-        navigation.navigate("Home", { name, email });
-      } else {
-        // Name and email do not exist in the database
-        setErrorMessage("Name or email do not exist");
-      }
-    } catch (error) {
-      console.error("Error checking database:", error);
-    }
+
+  const handleLogin = () => {
+    // Create a JSON object with username and password
+    const data = {
+      username: username,
+      password: password
+    };
+
+    // Send the data to the login endpoint
+    fetch('https://aimcabbooking.com/userlogin/login-api.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(async result => {
+        // console.log(result);
+        if (result.success == true) {
+          // Login successful
+          
+          // Alert.alert('Success', result.message);
+
+            // Save the user data to AsyncStorage
+          try {
+            await AsyncStorage.setItem('userData', JSON.stringify(result.user));
+            // console.log("hii");
+          } catch (error) {
+            console.error('Error saving user data:', error);
+          }
+
+          navigation.navigate("Home");
+          // You can handle the successful login here, e.g., navigate to a new screen
+        } else {
+          // Login error
+          Alert.alert('Error', result.message);
+        
+
+          // You can handle the login error here, e.g., display an error message
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Handle any error that occurs during the API call
+      });
   };
 
   const handleSkipTest = () => {
@@ -60,23 +92,23 @@ const Loginpage = () => {
         <View style={styles.formContainer}>
           <TextInput
             style={[styles.input, { width: "100%" }]}
-            placeholder="Name"
+            placeholder="username"
             placeholderTextColor="white"
-            value={name}
-            onChangeText={(text) => setName(text)}
+            value={username}
+            onChangeText={(text) => setUsername(text)}
           />
 
           <TextInput
             style={[styles.input, { width: "100%" }]}
-            placeholder="Email"
+            placeholder="password"
             placeholderTextColor="white"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
+            value={password}
+            onChangeText={(password) => setPassword(password)}
           />
 
           <TouchableOpacity
             style={[styles.loginButton, { width: "100%" }]}
-            onPress={handleFormSubmit}
+            onPress={handleLogin }
           >
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>

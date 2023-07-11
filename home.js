@@ -77,7 +77,7 @@ const HomePage = ({ navigation }) => {
         </View>
         <View style={styles.iconWrapper}>
           <View style={styles.icon}>
-                        <Image source={{uri:''}} style={styles.iconImage} />
+                        <Image source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9DdhQk1MOwiL6bu2NnMwHVcqE0eiGv0dX-A&usqp=CAU'}} style={styles.iconImage} />
 
               <Text style={styles.iconText}>Flights</Text>
           </View>
