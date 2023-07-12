@@ -14,7 +14,7 @@ const Regular = ({ formData }) => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
-      title: "AimCabBooking",
+      title: "",
       headerTitleStyle: {
         fontSize: 20,
         fontWeight: "bold",
@@ -105,6 +105,7 @@ const Regular = ({ formData }) => {
                 drop={formData.dropLocation}
                 date={formData.selectedDates}
                 fare={farePrice}
+                triptype={formData.triptype}
               />
             ))}
         </View>
